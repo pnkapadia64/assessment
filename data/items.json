@@ -1,7 +1,272 @@
 [
-  { "id": 1, "name": "Laptop Pro", "category": "Electronics", "price": 2499 },
-  { "id": 2, "name": "Noise Cancelling Headphones", "category": "Electronics", "price": 399 },
-  { "id": 3, "name": "Ultra‑Wide Monitor", "category": "Electronics", "price": 999 },
-  { "id": 4, "name": "Ergonomic Chair", "category": "Furniture", "price": 799 },
-  { "id": 5, "name": "Standing Desk", "category": "Furniture", "price": 1199 }
+  {
+    "id": 1,
+    "name": "Laptop Pro",
+    "category": "Electronics",
+    "price": 2499
+  },
+  {
+    "id": 2,
+    "name": "Noise Cancelling Headphones",
+    "category": "Electronics",
+    "price": 399
+  },
+  {
+    "id": 3,
+    "name": "Ultra‑Wide Monitor",
+    "category": "Electronics",
+    "price": 999
+  },
+  {
+    "id": 4,
+    "name": "Ergonomic Chair",
+    "category": "Furniture",
+    "price": 799
+  },
+  {
+    "id": 5,
+    "name": "Standing Desk",
+    "category": "Furniture",
+    "price": 1199
+  },
+  {
+    "id": 6,
+    "name": "Mechanical Keyboard",
+    "category": "Electronics",
+    "price": 179
+  },
+  {
+    "id": 7,
+    "name": "Wireless Mouse",
+    "category": "Electronics",
+    "price": 89
+  },
+  {
+    "id": 8,
+    "name": "USB-C Hub",
+    "category": "Electronics",
+    "price": 129
+  },
+  {
+    "id": 9,
+    "name": "Desk Lamp",
+    "category": "Furniture",
+    "price": 149
+  },
+  {
+    "id": 10,
+    "name": "Bookshelf",
+    "category": "Furniture",
+    "price": 299
+  },
+  {
+    "id": 11,
+    "name": "Office Chair Mat",
+    "category": "Furniture",
+    "price": 79
+  },
+  {
+    "id": 12,
+    "name": "Monitor Arm",
+    "category": "Electronics",
+    "price": 199
+  },
+  {
+    "id": 13,
+    "name": "Webcam HD",
+    "category": "Electronics",
+    "price": 149
+  },
+  {
+    "id": 14,
+    "name": "Microphone USB",
+    "category": "Electronics",
+    "price": 99
+  },
+  {
+    "id": 15,
+    "name": "Cable Management Kit",
+    "category": "Office Supplies",
+    "price": 29
+  },
+  {
+    "id": 16,
+    "name": "Laptop Stand",
+    "category": "Electronics",
+    "price": 69
+  },
+  {
+    "id": 17,
+    "name": "External SSD 1TB",
+    "category": "Electronics",
+    "price": 159
+  },
+  {
+    "id": 18,
+    "name": "Portable Monitor",
+    "category": "Electronics",
+    "price": 399
+  },
+  {
+    "id": 19,
+    "name": "Desk Organizer",
+    "category": "Office Supplies",
+    "price": 45
+  },
+  {
+    "id": 20,
+    "name": "Wireless Charger",
+    "category": "Electronics",
+    "price": 49
+  },
+  {
+    "id": 21,
+    "name": "Bluetooth Speaker",
+    "category": "Electronics",
+    "price": 129
+  },
+  {
+    "id": 22,
+    "name": "Filing Cabinet",
+    "category": "Furniture",
+    "price": 349
+  },
+  {
+    "id": 23,
+    "name": "Whiteboard",
+    "category": "Office Supplies",
+    "price": 89
+  },
+  {
+    "id": 24,
+    "name": "Printer All-in-One",
+    "category": "Electronics",
+    "price": 299
+  },
+  {
+    "id": 25,
+    "name": "Office Plant",
+    "category": "Decor",
+    "price": 39
+  },
+  {
+    "id": 26,
+    "name": "Adjustable Laptop Riser",
+    "category": "Electronics",
+    "price": 79
+  },
+  {
+    "id": 27,
+    "name": "Desk Pad XXL",
+    "category": "Office Supplies",
+    "price": 35
+  },
+  {
+    "id": 28,
+    "name": "LED Strip Lights",
+    "category": "Decor",
+    "price": 29
+  },
+  {
+    "id": 29,
+    "name": "Ergonomic Footrest",
+    "category": "Furniture",
+    "price": 59
+  },
+  {
+    "id": 30,
+    "name": "Document Scanner",
+    "category": "Electronics",
+    "price": 189
+  },
+  {
+    "id": 31,
+    "name": "Smart Plug 4-Pack",
+    "category": "Electronics",
+    "price": 49
+  },
+  {
+    "id": 32,
+    "name": "Wall Clock Modern",
+    "category": "Decor",
+    "price": 45
+  },
+  {
+    "id": 33,
+    "name": "Paper Shredder",
+    "category": "Office Supplies",
+    "price": 99
+  },
+  {
+    "id": 34,
+    "name": "Wireless Keyboard and Mouse Combo",
+    "category": "Electronics",
+    "price": 69
+  },
+  {
+    "id": 35,
+    "name": "Conference Speaker Phone",
+    "category": "Electronics",
+    "price": 179
+  },
+  {
+    "id": 36,
+    "name": "Desk Drawer Organizer",
+    "category": "Office Supplies",
+    "price": 25
+  },
+  {
+    "id": 37,
+    "name": "Monitor Privacy Screen",
+    "category": "Electronics",
+    "price": 59
+  },
+  {
+    "id": 38,
+    "name": "Tablet Stand Adjustable",
+    "category": "Electronics",
+    "price": 39
+  },
+  {
+    "id": 39,
+    "name": "Coffee Maker Single Serve",
+    "category": "Appliances",
+    "price": 89
+  },
+  {
+    "id": 40,
+    "name": "Surge Protector 12 Outlet",
+    "category": "Electronics",
+    "price": 35
+  },
+  {
+    "id": 41,
+    "name": "Mini Fridge Office",
+    "category": "Appliances",
+    "price": 149
+  },
+  {
+    "id": 42,
+    "name": "Bookends Metal Set",
+    "category": "Office Supplies",
+    "price": 29
+  },
+  {
+    "id": 43,
+    "name": "Wireless Charging Pad Dual",
+    "category": "Electronics",
+    "price": 69
+  },
+  {
+    "id": 44,
+    "name": "Task Chair Mesh",
+    "category": "Furniture",
+    "price": 249
+  },
+  {
+    "id": 45,
+    "name": "Portable Heater",
+    "category": "Appliances",
+    "price": 79
+  }
 ]
