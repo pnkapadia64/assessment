@@ -14,12 +14,11 @@ export function DataProvider({ children }) {
     params.append('page', page);
     
     const url = `http://localhost:3001/api/items?${params.toString()}`;
-    const res = await fetch(url, {
-      signal
-    });
+    const res = await fetch(url, { signal });
     const json = await res.json();
     setItems(json.data || json);
     setPagination(json.pagination || null);
+    return json;
   }, []);
 
   return (

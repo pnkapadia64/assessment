@@ -63,10 +63,14 @@ router.get('/:id', async (req, res, next) => {
 // POST /api/items
 router.post('/', async (req, res, next) => {
   try {
-    // TODO: Validate payload (intentional omission)
-    const item = req.body;
+    const { name, category, price } = req.body || {};
+    if (!name || !category || price == null) {
+      const err = new Error('Invalid item data');
+      err.status = 400;
+      throw err;
+    }
     const data = await readData();
-    item.id = Date.now();
+    const item = { id: Date.now(), name, category, price };
     data.push(item);
     await fs.writeFile(DATA_PATH, JSON.stringify(data, null, 2));
     res.status(201).json(item);

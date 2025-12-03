@@ -5,11 +5,11 @@ import { useData } from '../state/DataContext';
 import ItemRow from './ItemRow';
 
 function Items() {
-  const { items, pagination, fetchItems } = useData();
+  const { fetchItems } = useData();
   const [searchQuery, setSearchQuery] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
   const [allItems, setAllItems] = useState([]);
+  const [pagination, setPagination] = useState(null);
+  const [resetKey, setResetKey] = useState(0);
   const isFetchingRef = useRef(false);
   const itemCount = pagination?.total || allItems.length;
 
@@ -19,26 +19,35 @@ function Items() {
   );
 
   const loadMoreRows = useCallback((startIndex) => {
-    console.log('loadMoreRows called:', startIndex, items[startIndex], allItems[startIndex]);
-    if (isFetchingRef.current || !pagination?.hasNextPage || items[startIndex] !== undefined) {
-      console.log('loadMoreRows ignored');
+    if (isFetchingRef.current || allItems[startIndex] !== undefined) {
+      return Promise.resolve();
+    }
+
+    if (pagination && !pagination.hasNextPage && startIndex >= allItems.length) {
       return Promise.resolve();
     }
 
     isFetchingRef.current = true;
-    setIsLoading(true);
-    const nextPage = startIndex / (pagination?.pageSize || 10) + 1;
-    setCurrentPage(nextPage);
+    const nextPage = Math.floor(startIndex / (pagination?.pageSize || 10)) + 1;
 
     return fetchItems(null, searchQuery, nextPage)
+      .then(result => {
+        setAllItems(prev => {
+          if (nextPage === 1) return result.data || [];
+          const newItems = (result.data || []).filter(
+            item => !prev.some(p => p.id === item.id)
+          );
+          return [...prev, ...newItems];
+        });
+        setPagination(result.pagination || null);
+      })
       .catch(err => {
         console.error('Error loading more items:', err);
       })
       .finally(() => {
-        setIsLoading(false);
         isFetchingRef.current = false;
       });
-  }, [searchQuery, pagination?.hasNextPage]);
+  }, [searchQuery, allItems, pagination, fetchItems]);
 
   const onRowsRendered = useInfiniteLoader({
     isRowLoaded,
@@ -47,47 +56,36 @@ function Items() {
   });
 
   useEffect(() => {
+    setAllItems([]);
+    setPagination(null);
+    isFetchingRef.current = false;
+    setResetKey(prev => prev + 1);
+    
     const abortController = new AbortController();
-
     const timeoutId = setTimeout(() => {
-      console.log('other effect');
-      if (isFetchingRef.current) return;
-      
-      isFetchingRef.current = true;
-      setIsLoading(true);
-      setCurrentPage(1);
-      setAllItems([]);
-      
-      console.log('other effect fetching');
-      fetchItems(abortController.signal, searchQuery, 1)
-        .catch(err => {
-          if (err.name !== 'AbortError') {
-            console.error(err);
-          }
-        })
-        .finally(() => {
-          setIsLoading(false);
-          isFetchingRef.current = false;
-        });
+      if (!isFetchingRef.current) {
+        isFetchingRef.current = true;
+        fetchItems(abortController.signal, searchQuery, 1)
+          .then(result => {
+            setAllItems(result.data || []);
+            setPagination(result.pagination || null);
+          })
+          .catch(err => {
+            if (err.name !== 'AbortError') {
+              console.error('Error loading items:', err);
+            }
+          })
+          .finally(() => {
+            isFetchingRef.current = false;
+          });
+      }
     }, 300);
 
     return () => {
       clearTimeout(timeoutId);
       abortController.abort();
     };
-  }, [fetchItems, searchQuery]);
-
-  useEffect(() => {
-    if (items && items.length > 0) {
-      setAllItems(prev => {
-        if (currentPage === 1) {
-          return items;
-        }
-        const newItems = items.filter(item => !prev.some(p => p.id === item.id));
-        return [...prev, ...newItems];
-      });
-    }
-  }, [items, currentPage]);
+  }, [searchQuery, fetchItems]);
 
   return (
     <div style={{ padding: '16px' }}>
@@ -116,28 +114,16 @@ function Items() {
           height: '400px',
         }}
       >
-        {allItems.length === 0 && !isLoading ? (
-          <p style={{ textAlign: 'center', color: '#666', padding: '16px' }}>
-            No items found.
-          </p>
-        ) : (
-          <List
-            onRowsRendered={onRowsRendered}
-            rowComponent={ItemRow}
-            rowCount={itemCount}
-            rowHeight={60}
-            defaultHeight={400}
-            rowProps={{ rows: allItems }}
-          />
-        )}
+        <List
+          key={resetKey}
+          onRowsRendered={onRowsRendered}
+          rowComponent={ItemRow}
+          rowCount={itemCount}
+          rowHeight={60}
+          defaultHeight={400}
+          rowProps={{ rows: allItems }}
+        />
       </div>
-      
-      {/* {pagination && (
-        <div style={{ marginTop: '12px', textAlign: 'center', fontSize: '14px', color: '#666' }}>
-          Showing {allItems.length} of {pagination.total} items
-          {isLoading && ' (Loading...)'}
-        </div>
-      )} */}
     </div>
   );
 }
