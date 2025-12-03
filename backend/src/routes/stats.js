@@ -2,22 +2,36 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const router = express.Router();
-const DATA_PATH = path.join(__dirname, '../../data/items.json');
+const DATA_PATH = path.join(__dirname, '../../../data/items.json');
 
-// GET /api/stats
-router.get('/', (req, res, next) => {
-  fs.readFile(DATA_PATH, (err, raw) => {
-    if (err) return next(err);
+const cache = {
+  data: null,
+  stats: null,
+  mtime: null
+};
 
-    const items = JSON.parse(raw);
-    // Intentional heavy CPU calculation
-    const stats = {
-      total: items.length,
-      averagePrice: items.reduce((acc, cur) => acc + cur.price, 0) / items.length
-    };
+router.get('/', async (req, res, next) => {
+  try {
+    const stat = await fs.promises.stat(DATA_PATH);
 
-    res.json(stats);
-  });
+    if (!cache.mtime || stat.mtimeMs !== cache.mtime) {
+      console.log('Recomputing stats cache...');
+      const raw = await fs.promises.readFile(DATA_PATH, 'utf8');
+      const items = JSON.parse(raw);
+      
+      cache.data = items;
+      cache.stats = {
+        total: items.length,
+        averagePrice:
+          items.reduce((acc, cur) => acc + cur.price, 0) / items.length
+      };
+      cache.mtime = stat.mtimeMs;
+    }
+
+    res.json(cache.stats);
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = router;

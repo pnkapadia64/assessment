@@ -52,6 +52,33 @@ describe('Items API', () => {
     expect(res.body.name).toBe(newItem.name);
   });
 
+  it('should return 400 for post with missing name', async () => {
+    const badItem = { price: 10.99, category: 'Test' };
+    const res = await request(app).post('/api/items').send(badItem);
+    expect(res.statusCode).toEqual(400);
+    expect(res.body.message).toBe('Invalid item data');
+  });
+
+  it('should return 400 for post with missing category', async () => {
+    const badItem = { name: 'Test Item', price: 10.99 };
+    const res = await request(app).post('/api/items').send(badItem);
+    expect(res.statusCode).toEqual(400);
+    expect(res.body.message).toBe('Invalid item data');
+  });
+
+  it('should return 400 for post with missing price', async () => {
+    const badItem = { name: 'Test Item', category: 'Test' };
+    const res = await request(app).post('/api/items').send(badItem);
+    expect(res.statusCode).toEqual(400);
+    expect(res.body.message).toBe('Invalid item data');
+  });
+
+  it('should return 400 for post with empty payload', async () => {
+    const res = await request(app).post('/api/items').send({});
+    expect(res.statusCode).toEqual(400);
+    expect(res.body.message).toBe('Invalid item data');
+  });
+
   it('should search items by query with pagination', async () => {
     const res = await request(app).get('/api/items?q=laptop');
     expect(res.statusCode).toEqual(200);

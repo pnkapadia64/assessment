@@ -10,6 +10,7 @@ function Items() {
   const [allItems, setAllItems] = useState([]);
   const [pagination, setPagination] = useState(null);
   const [resetKey, setResetKey] = useState(0);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const isFetchingRef = useRef(false);
   const itemCount = pagination?.total || allItems.length;
 
@@ -60,6 +61,7 @@ function Items() {
     setPagination(null);
     isFetchingRef.current = false;
     setResetKey(prev => prev + 1);
+    setIsInitialLoading(true);
     
     const abortController = new AbortController();
     const timeoutId = setTimeout(() => {
@@ -77,6 +79,7 @@ function Items() {
           })
           .finally(() => {
             isFetchingRef.current = false;
+            setIsInitialLoading(false);
           });
       }
     }, 300);
@@ -88,7 +91,7 @@ function Items() {
   }, [searchQuery, fetchItems]);
 
   return (
-    <div style={{ padding: '16px' }}>
+    <div style={{ margin: '20px auto', width: '90%', }}>
       <input
         type="text"
         placeholder="Search items..."
@@ -99,30 +102,43 @@ function Items() {
           fontSize: '14px',
           marginBottom: '16px',
           width: '100%',
-          maxWidth: '400px',
           border: '1px solid #ccc',
-          borderRadius: '4px'
+          borderRadius: '4px',
+          boxSizing: 'border-box'
         }}
       />
       
       <div
         style={{
-          border: '1px solid #ddd',
+          border: '1px solid #bbb',
           borderRadius: '4px',
           backgroundColor: '#fafafa',
-          width: '100%',
+          padding: '8px',
+          margin: '0 auto',
           height: '400px',
         }}
       >
-        <List
-          key={resetKey}
-          onRowsRendered={onRowsRendered}
-          rowComponent={ItemRow}
-          rowCount={itemCount}
-          rowHeight={60}
-          defaultHeight={400}
-          rowProps={{ rows: allItems }}
-        />
+        {isInitialLoading ? (
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+            color: '#666'
+          }}>
+            Loading...
+          </div>
+        ) : (
+          <List
+            key={resetKey}
+            onRowsRendered={onRowsRendered}
+            rowComponent={ItemRow}
+            rowCount={itemCount}
+            rowHeight={60}
+            defaultHeight={400}
+            rowProps={{ rows: allItems }}
+          />
+        )}
       </div>
     </div>
   );
